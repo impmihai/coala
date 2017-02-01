@@ -49,7 +49,8 @@ class ConfWriter(ClosableObject):
         assert not self.__closed
 
         for section in sections:
-            self.write_section(sections[section])
+            if section != 'cli':
+                self.write_section(sections[section])
 
     def write_section(self, section):
         assert not self.__closed

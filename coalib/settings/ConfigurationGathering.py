@@ -209,6 +209,13 @@ def load_configuration(arg_list, log_printer, arg_parser=None):
     log_printer.log_level = LOG_LEVEL.str_dict.get(str_log_level,
                                                    LOG_LEVEL.INFO)
 
+    if sections['cli'].contents and 'default' in sections:
+        logging.warning('Inheritance of CLI arguments to \'Default\' section '
+                        'has been deprecated. Please modify the \'Default\' '
+                        'section by using the --settings argument.')
+        sections['default'].update(sections['cli'])
+        sections['cli'].append(Setting('enabled', 'False'))
+
     return sections, targets
 
 

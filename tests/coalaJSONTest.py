@@ -35,13 +35,16 @@ class coalaJSONTest(unittest.TestCase):
             retval, output = execute_coala(coala.main, 'coala', '--json',
                                            '-c', os.devnull,
                                            '-b', 'LineCountTestBear',
-                                           '-f', re.escape(filename))
+                                           '-f', re.escape(filename),
+                                           '--log-json')
             output = json.loads(output)
-            self.assertEqual(output['results']['cli'][0]['message'],
+            self.assertEqual(output['results']['default'][0]['message'],
                              'This file has 1 lines.')
-            self.assertEqual(output['results']['cli'][0]
+            self.assertEqual(output['results']['default'][0]
                              ['message_arguments'],
                              {})
+            self.assertRegex(output['logs'][0]['message'],
+                             "Inheritance of CLI arguments")
             self.assertNotEqual(retval, 0,
                                 'coala-json must return nonzero when '
                                 'results found')
@@ -105,6 +108,7 @@ class coalaJSONTest(unittest.TestCase):
             ".*\\[ERROR\\].*The requested coafile '.*' does not exist. .+\n")
 
     def test_output_file(self):
+        self.maxDiff = None
         with prepare_file(['#todo this is todo'], None) as (lines, filename):
             retval, output = execute_coala(coala.main, 'coala', '--json',
                                            '-c', os.devnull,

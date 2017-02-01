@@ -129,7 +129,7 @@ class coalaTest(unittest.TestCase):
                         '-S', 'use_spaces=yeah'
                     ),
                     autoapply=False
-                )[0]['cli'])
+                )[0]['default'])
             )
 
             self.assertEqual(
@@ -144,5 +144,5 @@ class coalaTest(unittest.TestCase):
                         '--apply-patches',
                         '-S', 'use_spaces=yeah'
                     )
-                )[0]['cli'])
+                )[0]['default'])
             )
